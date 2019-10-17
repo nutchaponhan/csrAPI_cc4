@@ -22,21 +22,19 @@ app.use(cor())
 app.post('/signin', (req, res) => {
     console.log('======hit signin=====')
     const {email, password} = req.body;
-    
-    db.select('email', 'password').from('users')
-    .where({
-        email: email,
-        password: password
-    })
-    .then(() => {
-        return db.select('*').from('users').then(data => {
-            res.json(data)
-        })
 
+    db('users').where({email: email}).select('password')
+    .then(data => {
+        if(password === data[0].password ){
+            return db.select('*').from('users').then(data => res.json(data));
+        } else {
+            return res.status(400).json('username not found')
+        }
     })
+    .catch(err => res.status(400).json([]))
 })
 
-app.post('/registor', (req, res) => {
+app.post('/register', (req, res) => {
     console.log('=====someone has been regist=======')
 
     const {firstname, lastname, email, password, description} = req.body;
@@ -52,6 +50,19 @@ app.post('/registor', (req, res) => {
     .then(data => {
         res.json(data[0])
     })
+})
+
+app.delete('/main', (req, res) => {
+    console.log('======someone try to delete=======')
+
+    db('users').where('email', req.body.target)
+    .del()
+    .then(() =>  {
+        return db.select('*').from('users').then(data => res.json(data));
+    })
+    .catch(err => res.status(400).json('error'))
+
+   
 })
 
 
