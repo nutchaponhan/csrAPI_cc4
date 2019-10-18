@@ -19,6 +19,10 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cor())
 
+app.get('/', (req, res) => {
+    res.status(200)
+})
+
 app.post('/signin', (req, res) => {
     console.log('======hit signin=====')
     const {email, password} = req.body;
