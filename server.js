@@ -66,6 +66,6 @@ app.delete('/main', (req, res) => {
 })
 
 
-app.listen(3000, () => {
-    console.log('server is running on PORT 3000')
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`server is running on ${process.env.PORT}`)
 })
