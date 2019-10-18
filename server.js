@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use(cor())
 
 app.get('/', (req, res) => {
-    res.status(200)
+    res.status(200).send('connet with heroku')
 })
 
 app.post('/signin', (req, res) => {
